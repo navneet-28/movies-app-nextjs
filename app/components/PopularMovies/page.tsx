@@ -1,8 +1,13 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import Card, { Movie } from "./Card";
+import Card, { Movie } from "../Card";
 
 const PopularMovies = ({ popularMovies }: { popularMovies: any }) => {
+  useEffect(() => {
+    console.log(popularMovies);
+  });
+  //   console.log(popularMovies);
   return (
     // <div className="flex flex-col mb-6">
     //   <div className="flex justify-between items-center mt-4">
