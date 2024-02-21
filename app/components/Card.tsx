@@ -1,41 +1,56 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { CardProps } from "../types/movie.type";
+import Image from "next/image";
+import StarIcon from "@mui/icons-material/Star";
 
-export interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  vote_average: number;
-}
-const IMAGE_URL = "https://image.tmdb.org/t/p/original";
-
-const Card = ({ movie }: { movie: Movie }) => {
+export default function Card({
+  title,
+  movieId,
+  poster_path,
+  release_date,
+  backdrop_path,
+  id,
+  movieRating,
+  vote_average,
+}: CardProps) {
+  const imagePath = "https://image.tmdb.org/t/p/original";
   return (
-    <Link href={`/movie/${movie?.id}`} className="w-full flex flex-col">
-      <div className="w-full h-[400px] relative">
-        <Image
-          src={`${IMAGE_URL}${movie?.poster_path}`}
-          alt={movie?.title}
-          fill={true}
-        />
-      </div>
-      <div className="flex gap-4 justify-between items-center mt-3 bg-red">
-        <h2 className="text-lg font-medium">{movie?.title}</h2>
-        <span
-          className={`flex flex-col p-2 text-white rounded-md ${
-            movie?.vote_average < 5
-              ? `bg-red-700`
-              : movie?.vote_average == 5
-              ? `bg-orange-600`
-              : `bg-green-700`
-          }`}
-        >
-          {movie?.vote_average}
-        </span>
+    <Link href={`/movie/${id}`}>
+      <div className="w-fit mt-[20px]">
+        <div className="w-[250px]">
+          <Image
+            src={imagePath + poster_path}
+            alt={title || "movie"}
+            className="h-[350px] w-[250px] max-sm:w-[350px] bg-stone-300 transition ease-in-out cursor-pointer hover:brightness-50 hover:scale-110 rounded-s-2xl"
+            loading="lazy"
+            width={500}
+            height={500}
+            blurDataURL={imagePath + backdrop_path}
+            placeholder="blur"
+          />
+          <section className="flex items-center justify-between">
+            <div className="block">
+              <h1 className="mt-3 text-sm text-white font-semibold tracking-tight">
+                {title} {id}
+              </h1>
+              <p className="text-sm flex gap-3 text-slate-400 font-normal mt-1">
+                <span>
+                  <StarIcon
+                    style={{ fontSize: "16px" }}
+                    className="text-orange-600"
+                  />
+                  {movieRating?.toFixed(1)}
+                </span>
+                <span>|</span>
+                <span> {release_date?.substring(0, 4)}</span>
+              </p>
+            </div>
+          </section>
+        </div>
       </div>
     </Link>
   );
-};
-
-export default Card;
+}

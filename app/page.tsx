@@ -1,11 +1,9 @@
-"use client";
 import Image from "next/image";
 import Homepage from "./components/Homepage/page";
 import { Interface } from "readline";
 import Link from "next/link";
-import { useState } from "react";
+// import { useState } from "react";
 
-import PopularMovies from "./components/PopularMovies/page";
 import {
   Key,
   ReactElement,
@@ -14,6 +12,7 @@ import {
   ReactPortal,
   PromiseLikeOfReactNode,
 } from "react";
+import Movies from "./components/Movies/page";
 
 interface Movie {
   id: number;
@@ -54,37 +53,30 @@ export default async function Home() {
     fetch(
       "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
       options
-    )
-      .then((response) => response.json())
-      .then((response) => setPopularMovies(response.results))
-      .then((response) => setLoaded(true))
-      .catch((err) => setError(err));
+    ).then((response) => response.json());
   }
   // const popularMovies = await fetchPopularMovies();
   // const upcomingMovies = await getUpcomingMovies();
   // const topRatedMovies = await getTopRatedMovies();
-  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(null);
+
+  // const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  // const [loaded, setLoaded] = useState(false);
+  // const [error, setError] = useState(null);
   fetchPopularMovies().then((movies) => {
     console.log(movies);
   });
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  } else if (!loaded) {
-    return <div>Loading...</div>;
-  } else {
-    return (
-      <main>
-        <Homepage />
-        {/* <PopularMovies popularMovies={popularMovies} /> */}
-        <div className="col">
+  return (
+    <main>
+      {/* <Homepage /> */}
+      <Movies />
+      {/* <PopularMovies popularMovies={popularMovies} /> */}
+      {/* <div className="col">
           {popularMovies.map((movie) => (
             <div key={movie.id}>{movie.title}</div>
           ))}
-        </div>
-      </main>
-    );
-  }
+        </div> */}
+      {/* <PopularMovies /> */}
+    </main>
+  );
 }
