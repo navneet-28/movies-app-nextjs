@@ -34,7 +34,7 @@ export default function Card({
           <section className="flex items-center justify-between">
             <div className="block">
               <h1 className="mt-3 text-sm text-white font-semibold tracking-tight">
-                {title} {id}
+                {title}
               </h1>
               <p className="text-sm flex gap-3 text-slate-400 font-normal mt-1">
                 <span>
