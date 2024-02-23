@@ -7,6 +7,8 @@ export interface CardProps {
   id?: number;
   movieRating?: number;
   vote_average?: number;
+  isLast?: boolean;
+  newLimit?: () => void;
 }
 
 export interface MovieThunkProp {

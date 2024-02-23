@@ -14,6 +14,7 @@ import SearchMovie from "../SearchMovie";
 import PopularMovies from "../PopularMovies/PopularMovies";
 import Card from "../Card";
 import Paginate from "../Paginate";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface IMovie {
   title: string;
@@ -31,16 +32,33 @@ export default function Movies() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [movies, setMovies] = useState<IMovie[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
   const router = useRouter();
 
-  useEffect(() => {
-    const getMovies = async () => {
+  const getMovies = async () => {
+    try {
       const response = await fetch(`/api/search?query=${query}&page=${page}`);
       const searchMovies = await response.json();
-      setMovies(searchMovies.results);
+      setMovies([...movies, ...searchMovies.results]);
       setTotalPages(searchMovies.total_pages);
-    };
+
+      if (searchMovies.results.length === 0) {
+        setHasMore(false);
+      }
+      setPage(page + 1);
+    } catch (err) {
+      console.error("Error fetching data: ", err);
+    }
+  };
+
+  useEffect(() => {
+    // const getMovies = async () => {
+    //   const response = await fetch(`/api/search?query=${query}&page=${page}`);
+    //   const searchMovies = await response.json();
+    //   setMovies(searchMovies.results);
+    //   setTotalPages(searchMovies.total_pages);
+    // };
     getMovies();
   }, []);
 

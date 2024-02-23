@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CardProps } from "../types/movie.type";
 import Image from "next/image";
 import StarIcon from "@mui/icons-material/Star";
@@ -15,8 +15,25 @@ export default function Card({
   id,
   movieRating,
   vote_average,
+  isLast,
+  newLimit,
 }: CardProps) {
   const imagePath = "https://image.tmdb.org/t/p/original";
+  const cardRef = useRef();
+  useEffect(() => {
+    if (!cardRef?.current) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (isLast && entry.isIntersecting) {
+        if (newLimit) {
+          newLimit();
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+
+    observer.observe(cardRef.current);
+  }, [isLast]);
   return (
     <Link href={`/movie/${id}`}>
       <div className="w-fit mt-[20px]">

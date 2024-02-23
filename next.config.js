@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 require("dotenv").config();
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   images: {
     domains: ["image.tmdb.org"],
   },
