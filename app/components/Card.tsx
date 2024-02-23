@@ -24,7 +24,7 @@ export default function Card({
           <Image
             src={imagePath + poster_path}
             alt={title || "movie"}
-            className="h-[350px] w-[250px] max-sm:w-[350px] bg-stone-300 transition ease-in-out cursor-pointer hover:brightness-50 hover:scale-110 rounded-s-2xl"
+            className="h-[350px] w-[250px] max-sm:w-[350px] bg-stone-300 transition ease-in-out cursor-pointer hover:brightness-50 hover:scale-110 rounded-2xl"
             loading="lazy"
             width={500}
             height={500}

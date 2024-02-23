@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, Suspense, SetStateAction } from "react";
+import {
+  useState,
+  useEffect,
+  Suspense,
+  SetStateAction,
+  ChangeEvent,
+} from "react";
 import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 import SearchMovie from "../SearchMovie";
@@ -28,13 +34,6 @@ export default function Movies() {
 
   const router = useRouter();
 
-  // const fetchPopularMovies = async () => {
-  //   const response = await fetch(`/api/popular?page=${1}`);
-  //   const popularMovies = await response.json();
-  //   setMovies(popularMovies.results);
-  //   setTotalPages(popularMovies.total_pages);
-  // };
-
   useEffect(() => {
     const getMovies = async () => {
       const response = await fetch(`/api/search?query=${query}&page=${page}`);
@@ -53,8 +52,25 @@ export default function Movies() {
     const movie = await response.json();
     setMovies(movie.results);
     setTotalPages(movie.total_pages);
-    console.log(totalPages);
-    // window.location.href = `/SearchResults?query=${query}`;
+  };
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    setIsPopular(false);
+
+    if (newQuery.trim() === "") {
+      setIsPopular(true);
+      setMovies([]);
+      setTotalPages(1);
+    } else {
+      const response = await fetch(
+        `/api/search?query=${newQuery}&page=${page}`
+      );
+      const movie = await response.json();
+      setMovies(movie.results);
+      setTotalPages(movie.total_pages);
+    }
   };
   const handleHomepageClick = () => {
     setIsPopular(true);
@@ -70,7 +86,7 @@ export default function Movies() {
             type="text"
             placeholder="Search movie..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => handleChange(e)}
           />
           <button
             color="white"
@@ -81,9 +97,7 @@ export default function Movies() {
           </button>
         </form>
       </div>
-      {/* <div>
-        <p className="text-white text-center">Homepage</p>
-      </div> */}
+
       <div>
         {isPopular ? (
           <div>

@@ -14,6 +14,13 @@ export default function SearchMovie() {
     const movie = await response.json();
     // window.location.href = `/SearchResults?query=${query}`;
   };
+  const handleChange = async (e) => {
+    e.preventDefault();
+    setQuery(e);
+    const response = await fetch(`/api/search?query=${query}`);
+    const movie = await response.json();
+  };
+
   return (
     <div className="text-center my-2">
       <form onSubmit={handleSubmit}>
